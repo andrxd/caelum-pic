@@ -1,0 +1,18 @@
+<header class="jumbotron">
+  <h1 class="text-center">{{title}}</h1>
+</header>
+<main class="container">
+  <div class="row mb-md-4">
+    <div class="col-md-12">
+
+      <a routerLink="/cadastro" class="btn btn-primary">Nova foto</a>
+
+    </div>
+  </div>
+  <div class="row">
+    <app-card *ngFor="let foto of listaFotos | async" [foto]="foto" class="col-md-4">
+      Só foto topper ein meu consagrado
+    </app-card>
+  </div>
+
+</main>
