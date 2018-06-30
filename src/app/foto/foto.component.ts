@@ -7,5 +7,7 @@ import { Component, Input } from "@angular/core";
 })
 export class FotoComponent {
     @Input() titulo = ''
-    @Input() url =  ''   
+    @Input() url = ''
+    descricao = ''
+    _id = ''
 }

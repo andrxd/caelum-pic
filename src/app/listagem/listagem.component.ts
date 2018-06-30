@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { FotoService } from '../services/foto.service';
+import { FotoComponent } from '../foto/foto.component';
+import { MensagemComponent } from '../mensagem/mensagem.component';
 
 @Component({
   selector: 'app-listagem',
@@ -9,13 +11,32 @@ import { HttpClient } from "@angular/common/http";
 export class ListagemComponent implements OnInit {
 
   title = `FotosTop`
-  listaFotos
+  listaFotos: FotoComponent[]
+  mensagem = new MensagemComponent()
 
-  constructor(conexaoApi: HttpClient) {
-    this.listaFotos = conexaoApi.get('http://localhost:3000/v1/fotos')
-
+  constructor(private servico: FotoService) {
+    this.servico.listar().subscribe(
+      fotosApi => {
+        this.listaFotos = fotosApi
+      }
+    )
   }
 
+  apagar(foto: FotoComponent) {
+    this.servico.deletar(foto).subscribe(() => {
+      this.listaFotos = this.listaFotos.filter(
+        fotoDaLista => {
+          if (fotoDaLista != foto) {
+            return fotoDaLista
+          }
+          this.mensagem.texto = `${foto.titulo} exluida com sucesso`
+          this.mensagem.tipo = 'success'
+        })
+    }, erro => {
+      this.mensagem.texto = `Erro ao remover ${foto.titulo} `
+      this.mensagem.tipo = 'danger'
+    })
+  }
   ngOnInit() {
   }
 
